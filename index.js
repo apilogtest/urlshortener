@@ -55,8 +55,8 @@ app.get('/api/shorturl/:id', (req, res) => {
     const idNumber = req.params.id;
     const realUrl = urlDatabase[idNumber];
 
-    res.redirect(realUrl);
-
+    //res.redirect(realUrl);
+    res.status(302).location(realUrl).end();
 
   
-})
+});
