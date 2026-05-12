@@ -48,7 +48,15 @@ app.post('/api/shorturl', function(req, res) {
     } else {
          res.json({ error: 'invalid url' })
     }
-
-
-   
 });
+
+app.get('/api/shorturl/:id', (req, res) => {
+
+    const idNumber = parseInt(req.params.id, 10);
+    const realUrl = urlDatabase[idNumber];
+
+    res.redirect(realUrl);
+
+
+  
+})
