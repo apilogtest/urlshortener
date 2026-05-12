@@ -55,8 +55,13 @@ app.get('/api/shorturl/:id', (req, res) => {
     const idNumber = req.params.id;
     const realUrl = urlDatabase[idNumber];
 
-    //res.redirect(realUrl);
-    res.status(302).location(realUrl).end();
+    if (!realUrl) {
+    return res.json({ error: 'No short URL found' });
+  }
 
-  
+    //res.redirect(realUrl);
+    //res.status(302).location(realUrl).end();
+    // Manually define status 302 and the Location header
+     res.writeHead(302, { Location: realUrl });
+     res.end();
 });
