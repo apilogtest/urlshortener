@@ -52,7 +52,7 @@ app.post('/api/shorturl', function(req, res) {
 
 app.get('/api/shorturl/:id', (req, res) => {
 
-    const idNumber = parseInt(req.params.id, 10);
+    const idNumber = req.params.id;
     const realUrl = urlDatabase[idNumber];
 
     res.redirect(realUrl);
