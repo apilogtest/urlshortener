@@ -78,13 +78,13 @@ app.get('/api/shorturl/:id', (req, res) => {
     return res.json({ error: 'No short URL found' });
   }
     // 1️⃣ Redirect using Express helper method
-    //res.redirect(realUrl);
+    res.redirect(realUrl);
     // 2️⃣ Redirect by setting status and Location header manually (Express)
     //res.status(302).location(realUrl).end();
     // 3️⃣ Redirect using plain Node.js, without Express
     // Manually define status 302 and the Location header
-     res.writeHead(302, { Location: realUrl }); // => 
-     res.end();
+     //res.writeHead(302, { Location: realUrl }); // => 
+     //res.end();
 });
 
 // Final version of this file
