@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
+const dns = require('dns');  // NEW: Added for dns.lookup
 const app = express();
 
 // Basic Configuration
@@ -36,6 +37,7 @@ app.use(express.json());
 app.post('/api/shorturl', function(req, res) {
     const originalUrl = req.body.url;
     const shortUrl = Object.keys(urlDatabase).length + 1; // generate id
+    /*
     const parsed = new URL(originalUrl);
 
     if ( parsed.protocol === 'http:' || parsed.protocol === 'https:') {
@@ -47,6 +49,23 @@ app.post('/api/shorturl', function(req, res) {
 
     } else {
          res.json({ error: 'invalid url' })
+    }
+    */
+    try {
+        const parsed = new URL(originalUrl);
+        if (parsed.protocol === 'http:' || parsed.protocol === 'https:') {
+            // NEW: Validate domain with dns.lookup
+            dns.lookup(parsed.hostname, (err, address) => {
+                if (err) return res.json({ error: 'invalid url' });
+                urlDatabase[shortUrl] = originalUrl;
+                res.json({ original_url: originalUrl, short_url: shortUrl });
+            });
+        } else {
+             res.json({ error: 'invalid url' });
+        }
+    } catch (error) {
+        // NEW: Catch malformed URL errors
+        res.json({ error: 'invalid url' });
     }
 });
 
